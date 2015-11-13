@@ -1,0 +1,31 @@
+function v=VirtualImagePoint(x,h,p,s,o)
+
+% based on a known x-coordinate for the location of reflection on a cylindrical mirror,
+% this function will calculate the virtual image point based on the object (o) and observer (s) locations.
+% p is the radius of the base of the cylindrical mirror and h is the height of the cylindrical mirror
+
+m=[x,0,-h/p*x+h]; % equation for surface of conical mirror
+
+dn=[h/sqrt(p^2+h^2),0,p/sqrt(p^2+h^2)]; % normal vector of conical mirror
+
+diUNNORM=[o(1)-m(1),o(2)-m(2),o(3)-m(3)]; % incident ray vector, 
+% vector pointing from mirror to object
+di=diUNNORM./abs(norm(diUNNORM)); % normalized incident ray vector
+
+dsUNNORM=[s(1)-m(1),s(2)-m(2),s(3)-m(3)]; % specular reflection vector
+% vector pointing from mirror surface to observer
+ds=dsUNNORM./abs(norm(dsUNNORM)); % normalized specular reflection vector
+
+R=p/h*(h-m(3))/cos(atan(p/h)); % equation for radius of curvature taken from
+% "Analytical treatment and experiments of the virtual image of cone
+% mirrors" equation 6
+
+f=R/2; % focal length of elliptical convex mirror is half the radius of
+% curvature
+
+od=abs(dot(dn,diUNNORM)); % determines the distance from the object to the point of reflection on the mirror along the optical axis
+
+id=-(-1/f-1/od)^(-1); % convex mirror equation usually written as: 1/f=1/do+1/di
+
+v=-ds.*id+m; % the virtual image of a point will lie along the specular reflection vector a distance
+% calculated above
