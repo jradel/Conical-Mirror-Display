@@ -16,18 +16,22 @@ nx=1001; % resolution for virtual image surface
 
 for ix=1:nx
 
-o=[(ix-1)/1000,0,1.5]; % This is where the object locations are set. There will be one virtual image point
+o=[(ix-1)/1000,0,1.5]; 
+% This is where the object locations are set. There will be one virtual image point
 % for every object point.
 
 
-LOR=@(x)LawOfReflection(x,h,p,s,o); % allows the calling of the LawOfReflection function with only x as the input variable
+LOR=@(x)LawOfReflection(x,h,p,s,o); 
+% allows the calling of the LawOfReflection function with only x as the input variable
 % the other variables, h,p,s, and o are set now as constants
 
-x_refl=fminbnd(LOR,0,p); % fminbnd minimizes the output of the input function, but only for one variable. Hence the reason
+x_refl=fminbnd(LOR,0,p); 
+% fminbnd minimizes the output of the input function, but only for one variable. Hence the reason
 % for the line above. Here the LawOfReflection function is minimized with respect to x to determine the x-coordinate
 % on the conical mirror where a ray will reflect from object to observer
 
-virtual_image(ix,:)=VirtualImagePoint(x_refl,h,p,s,o); % once the x-coordinate on the conical mirror where the ray will
+virtual_image(ix,:)=VirtualImagePoint(x_refl,h,p,s,o); 
+% once the x-coordinate on the conical mirror where the ray will
 % reflect from object to observer is known (x_refl), the VirtualImagePoint function will determine where the virtual
 % image point is.
 
