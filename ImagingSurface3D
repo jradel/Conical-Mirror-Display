@@ -1,0 +1,39 @@
+close all;
+clear all;
+clc;
+
+
+alpha=45/180*pi; %defining apex angle of cone
+h=1; % height of cone
+p=h*tan(alpha); % radius of cone
+s=[10,10,0.5]; % observer coordinates
+virtual_image=zeros(4,3);
+
+
+nx=10001;
+
+for ix=1:nx
+
+o=[mod(ix,100)/50-1,floor(ix/50)/100-1,1.5];
+
+
+LOR=@(coord)LawOfReflection3D(coord(1),coord(2),h,p,s,o);
+coord_refl=fminsearch(LOR,[0.5,0]);
+
+if LOR(coord_refl)<0.1
+    
+virtual_image(ix,:)=VirtualImagePoint3D(coord_refl(1),coord_refl(2),h,p,s,o);
+else
+virtual_image(ix,:)=[0 0 0]; 
+end
+end
+
+
+scatter3(virtual_image(:,1)/p,virtual_image(:,2),virtual_image(:,3),1)
+hold on
+axis([-1 1 -1 1 0 1])
+
+%figure(1)
+%scatter(virtual_image(:,1)/p,virtual_image(:,3))
+%hold on
+%axis([0 1 -inf inf])
