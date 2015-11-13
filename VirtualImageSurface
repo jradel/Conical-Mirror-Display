@@ -1,0 +1,39 @@
+close all;
+clear all;
+clc;
+
+% This script will construct the virtual image surface of a cylindrical mirror based on the apex angle of the cylindrical
+% mirror, alpha, the height of the conical mirror, h, and an observer, s, and object locations, o.
+
+alpha=45/180*pi; %d efining apex angle of cone
+h=1; % height of cone
+p=h*tan(alpha); % radius of base of cone
+s=[2.5,0,0]; % observer location coordinates
+virtual_image=zeros(4,3); % initializing virtual_image surface coordinates
+
+nx=1001; % resolution for virtual image surface
+
+
+for ix=1:nx
+
+o=[(ix-1)/1000,0,1.5]; % This is where the object locations are set. There will be one virtual image point
+% for every object point.
+
+
+LOR=@(x)LawOfReflection(x,h,p,s,o); % allows the calling of the LawOfReflection function with only x as the input variable
+% the other variables, h,p,s, and o are set now as constants
+
+x_refl=fminbnd(LOR,0,p); % fminbnd minimizes the output of the input function, but only for one variable. Hence the reason
+% for the line above. Here the LawOfReflection function is minimized with respect to x to determine the x-coordinate
+% on the conical mirror where a ray will reflect from object to observer
+
+virtual_image(ix,:)=VirtualImagePoint(x_refl,h,p,s,o); % once the x-coordinate on the conical mirror where the ray will
+% reflect from object to observer is known (x_refl), the VirtualImagePoint function will determine where the virtual
+% image point is.
+
+end
+
+% scatter3(virtual_image(:,1),virtual_image(:,2),virtual_image(:,3))
+
+figure(1)
+scatter(virtual_image(:,1)/p,virtual_image(:,3)) % plots virtual image surface
