@@ -1,0 +1,28 @@
+function fom=LawOfReflection(x,h,p,s,o)
+
+% This program calculates wether the law of reflection is holding, based on an object
+% location (o), an observer location (s), the radius of the base do the conical mirror (p),
+% the height of the conical mirror (h), and the x coordinate for a point on the cone where
+% a ray is reflecting from.
+
+% The end result is that if fom (figure of merit) is large, the law of reflection is not holding.
+% So using script to minimze the output of this function with respect to the input x coordinate
+% will determine where on the mirror a ray will reflect from object to observer
+
+
+m=[x,0,-h/p*x+h]; % equation for surface of conical mirror
+
+dn=[h/sqrt(p^2+h^2),0,p/sqrt(p^2+h^2)]; % normal vector of conical mirror
+
+dsUNNORM=[s(1)-m(1),s(2)-m(2),s(3)-m(3)]; % specular reflection vector
+% vector pointing from mirror surface to observer
+ds=dsUNNORM./abs(norm(dsUNNORM)); % normalized specular reflection vector
+
+diUNNORM=[o(1)-m(1),o(2)-m(2),o(3)-m(3)]; % incident ray vector, vector
+% vector pointing from mirror to object
+di=diUNNORM./abs(norm(diUNNORM)); % normalized incident ray vector
+
+fom=norm(ds-2*dot(dn,di)*dn+di); % fom (figure of merit), should equal zero
+% if law of reflection is holding. This is the variable that needs to be
+% minimized to determine the point on the mirror that will cause a ray to
+% reflect from the object to the observer
