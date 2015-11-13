@@ -37,3 +37,5 @@ end
 
 figure(1)
 scatter(virtual_image(:,1)/p,virtual_image(:,3)) % plots virtual image surface
+hold on
+axis([0 1 inf inf])
