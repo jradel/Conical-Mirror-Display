@@ -30,12 +30,11 @@ x_refl=fminbnd(LOR,0,p);
 % for the line above. Here the LawOfReflection function is minimized with respect to x to determine the x-coordinate
 % on the conical mirror where a ray will reflect from object to observer
 
-% sometimes there is no point in which a ray will reflect from object to observer (meaning the observer cannot see
-% that part of the object in the mirror. The following if statements forces the virtual image point to be [0 0 0]
-% if this is the case
 
 if LOR(x_refl)<0.01
-
+% sometimes there is no point in which a ray will reflect from object to observer (meaning the observer cannot see
+% that part of the object in the mirror. This if statement forces the virtual image point to be [0 0 0]
+% if this is the case
 virtual_image(ix,:)=VirtualImagePoint(x_refl,h,p,s,o); 
 % once the x-coordinate on the conical mirror where the ray will
 % reflect from object to observer is known (x_refl), the VirtualImagePoint function will determine where the virtual
